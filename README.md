@@ -63,5 +63,5 @@ python generate.py --base_model "budecosystem/code-millenials-13b"
 
 ### Important Note
 
-- **Bias, Risks, and Limitations:** Magicoders may sometimes make errors, produce misleading contents, or struggle to manage tasks that are not related to coding.
+- **Bias, Risks, and Limitations:** Model may sometimes make errors, produce misleading contents, or struggle to manage tasks that are not related to coding.
 
