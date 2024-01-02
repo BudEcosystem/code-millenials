@@ -1,7 +1,7 @@
 
 # Bud Code Millenials
 
-Welcome to our Code Model repository! Our model is specifically fine-tuned for code generation tasks, aiming to revolutionize how systems understand and translate natural language instructions into code queries. Built on CodeLLaMa, our model has been meticulously fine-tuned with a curated code generation instructions, ensuring quality and precision. 
+Welcome to our Code Model repository! Our model is specifically fine-tuned for code generation tasks. Bud Millenial Code Gen open-source models are currently the State of the Art (SOTA) for code generation, beating all the existing models of all sizes. We have achieved a HumanEval value of 80.48 @ Pass 1, beating proprietary models like Gemini Ultra, Claude, GPT-3.5 etc. by a large margin, and on par with GPT-4 (HumanEval ~ 82. Ref. WizardCoder). Our proprietary model (Bud Code Jr) beats GPT-4 as well with a HumanEval value of 88.2 & a context size of 168K, we will be releasing an API for Researchers, Enterprises, and potential Partners by January 2024 end. If interested, please reach out to jithinvg@bud.studio 
 
 
 ### News 🔥🔥🔥
