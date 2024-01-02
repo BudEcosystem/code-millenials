@@ -13,7 +13,7 @@ Welcome to our Code Model repository! Our model is specifically fine-tuned for c
 ### HumanEval
 
 <p align="center" width="100%">
-<a ><img src="assets/result.png" alt="WizardCoder" style="width: 100%; min-width: 300px; display: block; margin: auto;"></a>
+<a ><img src="assets/result.png" alt="CodeMillenials" style="width: 100%; min-width: 300px; display: block; margin: auto;"></a>
 </p>
 
 For the millenial models, the eval script is used for the above result.
