@@ -1,5 +1,5 @@
 
-# Introducing Code Millenials
+# Bud Code Millenials
 
 Welcome to our Code Model repository! Our model is specifically fine-tuned for code generation tasks, aiming to revolutionize how systems understand and translate natural language instructions into code queries. Built on CodeLLaMa, our model has been meticulously fine-tuned with a curated code generation instructions, ensuring quality and precision. 
 
