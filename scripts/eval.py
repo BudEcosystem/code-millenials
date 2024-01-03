@@ -36,7 +36,7 @@ def chunked(seq, n):
     return (seq[i : i + n] for i in range(0, len(seq), n))
 
 def get_model(model_path):
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, padding_side="left")
     tokenizer.pad_token_id = tokenizer.eos_token_id
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
@@ -46,22 +46,69 @@ def get_model(model_path):
 
     return model, tokenizer
 
+def pad_sequences(
+    sequences,
+    pad_value: int,
+    padding_side,
+    dtype: torch.dtype = torch.long,
+    padding_length = None,
+) -> torch.Tensor:
+    tensors = [torch.tensor(sequence, dtype=dtype) for sequence in sequences]
+    max_len = max(len(sequence) for sequence in sequences)
+    if padding_length is not None:
+        assert padding_length >= max_len, "padding_length must be >= max_len"
+        max_len = padding_length
+    if padding_side == "right":
+        result = torch.nn.utils.rnn.pad_sequence(
+            tensors, batch_first=True, padding_value=pad_value
+        )
+        remaining_length = max_len - result.shape[-1]
+        # padding matrix of (batch_size * remaining_length)
+        shape = result.shape[:-1] + (remaining_length,)
+        padding_matrix = torch.full(shape, pad_value, dtype=dtype)
+        result = torch.cat([result, padding_matrix], dim=-1)
+    else:
+        padded_tensors: list[torch.Tensor] = []
+        for tensor in tensors:
+            n_pad_values = max_len - len(tensor)
+            padded_values = torch.full((n_pad_values,), pad_value, dtype=dtype)
+            padded_tensor = torch.cat([padded_values, tensor], dim=0)
+            assert len(padded_tensor) == max_len
+            padded_tensors.append(padded_tensor)
+        result = torch.stack(padded_tensors, dim=0)
+    assert result.shape == torch.Size([len(sequences), max_len])
+    return result
+
 def get_response(model, tokenizer, prompts):
     
-    input_ids = tokenizer(prompts, return_tensors="pt", padding=True)
-    input_ids = input_ids['input_ids'].to(model.device)
+    input_ids = tokenizer(prompts, add_special_tokens=False)
+    input_ids = input_ids['input_ids']
+    
+    bos_token_id = tokenizer.bos_token_id
+    eos_token_id = tokenizer.eos_token_id
+
+    input_ids = [
+        [bos_token_id] + input_id for input_id in input_ids
+    ]
+
+    input_ids = pad_sequences(
+        sequences=input_ids,
+        pad_value=tokenizer.pad_token_id,
+        padding_side="left",
+    )
+    
+    input_ids = input_ids.to(model.device)
     input_len = input_ids.shape[1]
     
     attention_mask = input_ids.ne(tokenizer.pad_token_id)
 
     generation_config = GenerationConfig(
-        # temperature=0.0,
-        top_p=1,
-        num_beams=4,
         max_new_tokens=512,
-        do_sample=False,
-        pad_token_id=0
+        pad_token_id=tokenizer.pad_token_id,
+        eos_token_id=eos_token_id,
+        num_beams=4
     )
+
     outputs = model.generate(
         input_ids=input_ids,
         attention_mask=attention_mask,
@@ -102,7 +149,7 @@ def main(
     for problems, batch_idx in tqdm(iter, total=n_total):
         task_ids = [problem["id"] for problem in problems]
         prompts = [
-            get_prompt(problem["instruction"]) + problem["response_prefix"]
+            get_prompt(problem["instruction"], problem["response_prefix"])
             for problem in problems
         ]
         print("PROMPT")
