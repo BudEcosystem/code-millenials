@@ -4,16 +4,43 @@ import os
 
 import fire
 import torch
-from evalplus.data import get_human_eval_plus, write_jsonl
+from evalplus.data import get_human_eval_plus, get_mbpp_plus, write_jsonl
 from tqdm.auto import tqdm
 from transformers import GenerationConfig, AutoModelForCausalLM, AutoTokenizer
 
 from utils.prompt import get_prompt
 
 
+def get_mbpp_raw_problems():
+    problems = get_mbpp_plus()
+    return list(problems.values())
+
 def get_humaneval_raw_problems():
     problems = get_human_eval_plus()
     return list(problems.values())
+
+def map_mbpp_problem(p: dict):
+    id = p["task_id"]
+    prompt = p["prompt"]
+    start_index = prompt.index('"""')
+    end_index = prompt.rindex('"""')
+    prompt = prompt[start_index + 3 : end_index]
+    assert_index = prompt.index("assert")
+    instruction = prompt[:assert_index].strip()
+    if not instruction.endswith("."):
+        instruction += "."
+    assertion = prompt[assert_index:].strip()
+    instruction = f"""{instruction} Your code should satisfy the following assertion:
+```python
+{assertion}
+```"""
+    response_prefix = f"""```python"""
+    
+    return {
+        'id': str(id),
+        'instruction': instruction,
+        'response_prefix': response_prefix
+    }
 
 def map_humaneval_problem(p: dict):
     id = p["task_id"]
@@ -128,16 +155,25 @@ def get_response(model, tokenizer, prompts):
 def main(
     base_model,
     save_path = '',
+    dataset = 'humaneval',
     n_problems_per_batch = 16,
     n_batches = 1,
     n_samples_per_problem = 1,
     
 ):
 
-    save_path=f"evalplus-{os.path.basename(base_model)}-humaneval.jsonl"
+    save_path=f"evalplus-{os.path.basename(base_model)}-{dataset}.jsonl"
 
-    raw_problems = get_humaneval_raw_problems()
-    problems = list(map(map_humaneval_problem, raw_problems))
+    # raw_problems = get_humaneval_raw_problems()
+    # problems = list(map(map_humaneval_problem, raw_problems))
+
+    raw_problem_fn, map_problem_fn = (
+        (get_humaneval_raw_problems, map_humaneval_problem)
+        if dataset == "humaneval"
+        else (get_mbpp_raw_problems, map_mbpp_problem)
+    )
+    raw_problems = raw_problem_fn()
+    problems = list(map(map_problem_fn, raw_problems))
 
     model, tokenizer = get_model(base_model)
     

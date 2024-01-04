@@ -172,4 +172,3 @@ cython_debug/
 flagged/
 *.sh
 logs/
-evalplus-*
