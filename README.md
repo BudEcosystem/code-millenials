@@ -23,10 +23,10 @@ Note: The humaneval values of other models are taken from the official repos of 
 
 ### Models
 
-|   Model | Checkpoint  | HumanEval |
+|   Model | Checkpoint  | HumanEval(+) |
 |---------|-------------|-----------|
-|Code Millenials 34B | <a href="https://huggingface.co/budecosystem/code-millenials-34b" target="_blank">HF Link</a> | 80.48 |
-|Code Millenials 13B | <a href="https://huggingface.co/budecosystem/code-millenials-13b" target="_blank">HF Link</a> | 76.21 |
+|Code Millenials 34B | <a href="https://huggingface.co/budecosystem/code-millenials-34b" target="_blank">HF Link</a> | 80.48(75) |
+|Code Millenials 13B | <a href="https://huggingface.co/budecosystem/code-millenials-13b" target="_blank">HF Link</a> | 76.21(69.5) |
 
 
 
