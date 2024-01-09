@@ -40,8 +40,8 @@ Inference code using the pre-trained model from the Hugging Face model hub
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-tokenizer = AutoTokenizer.from_pretrained("budecosystem/code-millenials-13b")
-model = AutoModelForCausalLM.from_pretrained("budecosystem/code-millenials-13b")
+tokenizer = AutoTokenizer.from_pretrained("budecosystem/code-millenials-34b")
+model = AutoModelForCausalLM.from_pretrained("budecosystem/code-millenials-34b")
 
 template = """A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.
 ### Instruction: {instruction} ### Response:"""
@@ -59,7 +59,7 @@ print(tokenizer.decode(sample[0]))
 ### Gradio Demo
 
 ```
-python generate.py --base_model "budecosystem/code-millenials-13b"
+python generate.py --base_model "budecosystem/code-millenials-34b"
 ```
 
 ### Important Note

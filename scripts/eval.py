@@ -135,7 +135,7 @@ def get_response(model, tokenizer, prompts):
         max_new_tokens=512,
         pad_token_id=tokenizer.pad_token_id,
         eos_token_id=eos_token_id,
-        # num_beams=4
+        num_beams=4
     )
 
     outputs = model.generate(
