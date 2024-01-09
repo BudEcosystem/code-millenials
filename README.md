@@ -27,7 +27,8 @@ Note: The humaneval values of other models are taken from the official repos of 
 |---------|-------------|---------------|----------|
 |Code Millenials 34B | <a href="https://huggingface.co/budecosystem/code-millenials-34b" target="_blank">HF Link</a> | 80.48 (75) | 74.68 (62.9) |
 |Code Millenials 13B | <a href="https://huggingface.co/budecosystem/code-millenials-13b" target="_blank">HF Link</a> | 76.21 (69.5) | 70.17 (57.6) |
-
+|Code Millenials 3B | <a href="https://huggingface.co/budecosystem/code-millenials-3b" target="_blank">HF Link</a> | 56.09 (52.43) | 55.13 (47.11) |
+|Code Millenials 1B | <a href="https://huggingface.co/budecosystem/code-millenials-1b" target="_blank">HF Link</a> | 51.82 (48.17) | 53.13 (44.61) |
 
 
 

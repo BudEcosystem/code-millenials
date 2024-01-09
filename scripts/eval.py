@@ -63,12 +63,13 @@ def chunked(seq, n):
     return (seq[i : i + n] for i in range(0, len(seq), n))
 
 def get_model(model_path):
-    tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, padding_side="left")
+    tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, padding_side="left", trust_remote_code=True)
     tokenizer.pad_token_id = tokenizer.eos_token_id
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
         torch_dtype=torch.float16,
-        device_map="auto"
+        device_map="auto",
+        trust_remote_code=True
     )
 
     return model, tokenizer
@@ -114,8 +115,9 @@ def get_response(model, tokenizer, prompts):
     bos_token_id = tokenizer.bos_token_id
     eos_token_id = tokenizer.eos_token_id
 
+    bos_token_ids = [bos_token_id] if bos_token_id else []
     input_ids = [
-        [bos_token_id] + input_id for input_id in input_ids
+        bos_token_ids + input_id for input_id in input_ids
     ]
 
     input_ids = pad_sequences(
@@ -133,7 +135,7 @@ def get_response(model, tokenizer, prompts):
         max_new_tokens=512,
         pad_token_id=tokenizer.pad_token_id,
         eos_token_id=eos_token_id,
-        num_beams=4
+        # num_beams=4
     )
 
     outputs = model.generate(
