@@ -6,6 +6,8 @@ Welcome to our Code Model repository! Our model is specifically fine-tuned for c
 
 ### News 🔥🔥🔥
 
+- [2024/01/09] We released **Code Millenials 3B** , which achieves the **56.09 pass@1** on the [HumanEval Benchmarks](https://github.com/openai/human-eval).
+- [2024/01/09] We released **Code Millenials 1B** , which achieves the **51.82 pass@1** on the [HumanEval Benchmarks](https://github.com/openai/human-eval).
 - [2024/01/03] We released **Code Millenials 34B** , which achieves the **80.48 pass@1** on the [HumanEval Benchmarks](https://github.com/openai/human-eval).
 - [2024/01/02] We released **Code Millenials 13B** , which achieves the **76.21 pass@1** on the [HumanEval Benchmarks](https://github.com/openai/human-eval).
 
@@ -14,6 +16,10 @@ Welcome to our Code Model repository! Our model is specifically fine-tuned for c
 
 <p align="center" width="100%">
 <a ><img src="assets/result.png" alt="CodeMillenials" style="width: 100%; min-width: 300px; display: block; margin: auto;"></a>
+</p>
+
+<p align="center" width="100%">
+<a ><img src="assets/result-3b.png" alt="CodeMillenials" style="width: 100%; min-width: 300px; display: block; margin: auto;"></a>
 </p>
 
 For the millenial models, the eval script is used for the above result.
